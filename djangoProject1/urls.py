@@ -16,12 +16,16 @@ Including another URLconf
 import xadmin
 from django.contrib import admin
 from django.urls import path
-from app01 import views
+
+import FileRestore.views
+from product import views as product
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
-    path('index/', views.index),
-    path('use/html', views.use_html),
-    path('use/request', views.request),
-    path('xadmin/', xadmin.site.urls)
+    # path('index/', views.index),
+    # path('use/html', views.use_html),
+    # path('use/request', views.request),
+    path('xadmin/', xadmin.site.urls),
+    path('showPage/', product.showPage),
+    path('FileRestore/',FileRestore.views.toRequestHtml)
 ]

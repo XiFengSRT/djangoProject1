@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入组件库 -->
+    <script src="{% static 'plugins/vue/vue.js' %}"></script>
+    <script src="{% static 'plugins/elementUI/elementUI.js' %}"></script>
+    <script src="{% static 'plugins/scrollreveal/scrollreveal.js' %}"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="{% static 'plugins/elementUI/elementUI.css' %}">
+    <link rel="stylesheet" href="{% static 'css/showPage.css' %}">
+</head>
+<body>
+{#https://juejin.cn/post/6951182604200575006  关于滚动的教程#}
+
+
+{#<script src="{% static 'js/showPage.js' %}"></script>#}
+{#<form action="/FileRestore" method="get">#}
+{#    <input type="text" name="productName" value="SOFA_index" style="display: none">#}
+{#    <input type="submit" value="提交">#}
+{#</form>#}
+{#    {% for item in data_list %}#}
+{#        <span>{{ item.showName }}</span>#}
+{#        <span>{{ item.price }}</span>#}
+{#        <span>{{ item.description }}</span>#}
+{#        <span>{{ item.html_address }}</span>#}
+{#        <span>{{ item.css_address }}</span>#}
+{#        <span>{{ item.js_address }}</span>#}
+{#    {% endfor %}#}
+{#https://blog.csdn.net/t121097/article/details/80233589#}
+
+<el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect" id="app">
+    <div class="titleText"
+         style="display: inline-block;font-family:'PingFang SC';font-weight: bolder;font-size:x-large;margin-left: 2%;color: #559eff">
+        前 端 技 术
+    </div>
+    <div class="loginPart" style="margin-bottom: 0.5%;margin-left: 86%;display: inline-block">
+        <el-button type="primary" @click="loginFormVisible = true" icon="el-icon-user" style="margin-bottom: 0.5%;"
+                   circle></el-button>
+        <el-button type="primary" icon="el-icon-plus" @click="registerFormVisible = true"
+                   circle></el-button>
+
+        {#------------------------------登录界面------------------------------#}
+        <el-dialog title="欢迎登录" :visible.sync="loginFormVisible" :append-to-body="true" width="35%">
+            <form style="text-align:center;" action="">
+                {% csrf_token %}
+                <div><input type="text" name="username" placeholder="请输入用户名" style="color: #559eff"></div>
+                <div><input type="password" name="pwd" placeholder="请输入您的密码" style="color: #559eff"></div>
+                <div><input type="submit" value="登录" style="background-color: #559eff;color: white"></div>
+                {{ erorrMessage }}
+            </form>
+        </el-dialog>
+        <el-dialog title="欢迎注册" :visible.sync="registerFormVisible" :append-to-body="true" width="35%">
+            <form style="text-align:center;" action="">
+                {% csrf_token %}
+                <div><input type="text" name="username" placeholder="请输入用户名" style="color: #559eff"></div>
+                <div><input type="password" name="pwd" placeholder="请输入您的密码" style="color: #559eff"></div>
+                <div><input type="password" name="showName" placeholder="请输入您的昵称" style="color: #559eff"></div>
+                <div><input type="submit" value="注册" style="background-color: #559eff;color: white"></div>
+            </form>
+        </el-dialog>
+        {#------------------------------登录界面------------------------------#}
+    </div>
+</el-menu>
+<div class="line"></div>
+
+<div class="div2" data-scroll-reveal="enter from the top over 5s"></div>
+<div class="div1"></div>
+<div class="div2" data-scroll-reveal="enter from the top over 5s"></div>
+
+
+<script>
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                loginFormVisible: false,
+                registerFormVisible: false,
+                formLabelWidth: '120px'
+            }
+        }
+    })
+
+</script>
+<script>
+    (function () {
+        ScrollReveal().reveal('.div2', {
+            delay: 250,
+            reset: true,
+        });
+    })();
+    (function () {
+        ScrollReveal().reveal(
+            '.titleText',
+            {
+                distance: '200px',
+                origin: 'left',
+                reset: true,
+            }
+        );
+    })();
+    (function () {
+        ScrollReveal().reveal(
+            '.loginPart',
+            {
+                distance: '200px',
+                origin: 'left',
+                reset: true,
+            }
+        );
+    })();
+</script>
+{#elementUI的引入#}
+
+
+</body>
+</html>
