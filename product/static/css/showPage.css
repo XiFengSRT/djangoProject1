@@ -7,7 +7,6 @@
 .div2{
     width: 100%;
     height: 980px;
-    background-color: #1da7ee;
 }
 
 .menuBar{
@@ -35,4 +34,7 @@ input:focus{
     outline: 0;
     -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
+}
+.img{
+    z-index: 1;
 }

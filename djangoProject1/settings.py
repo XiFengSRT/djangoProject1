@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'product',
     'FileRestore',
-    'User'
+    'User',
+    'recharge'
 ]
 
 MIDDLEWARE = [

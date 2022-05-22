@@ -4,71 +4,104 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'plugins/elementUI/elementUI.css' %}">
+    <link rel="stylesheet" href="{% static 'css/showPage.css' %}">
     <!-- 引入组件库 -->
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'plugins/vue/vue.js' %}"></script>
     <script src="{% static 'plugins/elementUI/elementUI.js' %}"></script>
     <script src="{% static 'plugins/scrollreveal/scrollreveal.js' %}"></script>
-    <!-- 引入样式 -->
-    <link rel="stylesheet" href="{% static 'plugins/elementUI/elementUI.css' %}">
-    <link rel="stylesheet" href="{% static 'css/showPage.css' %}">
 </head>
 <body>
-{#https://juejin.cn/post/6951182604200575006  关于滚动的教程#}
-
-
-{#<script src="{% static 'js/showPage.js' %}"></script>#}
-{#<form action="/FileRestore" method="get">#}
-{#    <input type="text" name="productName" value="SOFA_index" style="display: none">#}
-{#    <input type="submit" value="提交">#}
-{#</form>#}
-{#    {% for item in data_list %}#}
-{#        <span>{{ item.showName }}</span>#}
-{#        <span>{{ item.price }}</span>#}
-{#        <span>{{ item.description }}</span>#}
-{#        <span>{{ item.html_address }}</span>#}
-{#        <span>{{ item.css_address }}</span>#}
-{#        <span>{{ item.js_address }}</span>#}
-{#    {% endfor %}#}
-{#https://blog.csdn.net/t121097/article/details/80233589#}
-
 <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect" id="app">
     <div class="titleText"
-         style="display: inline-block;font-family:'PingFang SC';font-weight: bolder;font-size:x-large;margin-left: 2%;color: #559eff">
+         style="display: inline-block;font-family:'PingFang SC';font-weight: bolder;font-size:x-large;margin-left: 2%;color: #559eff;padding-top: 0.5%">
         前 端 技 术
     </div>
-    <div class="loginPart" style="margin-bottom: 0.5%;margin-left: 86%;display: inline-block">
-        <el-button type="primary" @click="loginFormVisible = true" icon="el-icon-user" style="margin-bottom: 0.5%;"
-                   circle></el-button>
-        <el-button type="primary" icon="el-icon-plus" @click="registerFormVisible = true"
-                   circle></el-button>
+    <div class="loginPart" style="margin-bottom: 0.5%;margin-left: 86%;display: inline;font-size: x-large;">
+        {% if loginMessage == "Failure" %}
+            <el-button class="loginPart" @click="loginFormVisible = true" icon="el-icon-user"
+                       style="margin-bottom: 0.5%;"
+                       circle></el-button>
+            <el-button class="loginPart" icon="el-icon-plus" @click="registerFormVisible = true"
+                       circle></el-button>
 
-        {#------------------------------登录界面------------------------------#}
-        <el-dialog title="欢迎登录" :visible.sync="loginFormVisible" :append-to-body="true" width="35%">
-            <form style="text-align:center;" action="">
-                {% csrf_token %}
-                <div><input type="text" name="username" placeholder="请输入用户名" style="color: #559eff"></div>
-                <div><input type="password" name="pwd" placeholder="请输入您的密码" style="color: #559eff"></div>
-                <div><input type="submit" value="登录" style="background-color: #559eff;color: white"></div>
-                {{ erorrMessage }}
-            </form>
-        </el-dialog>
-        <el-dialog title="欢迎注册" :visible.sync="registerFormVisible" :append-to-body="true" width="35%">
-            <form style="text-align:center;" action="">
-                {% csrf_token %}
-                <div><input type="text" name="username" placeholder="请输入用户名" style="color: #559eff"></div>
-                <div><input type="password" name="pwd" placeholder="请输入您的密码" style="color: #559eff"></div>
-                <div><input type="password" name="showName" placeholder="请输入您的昵称" style="color: #559eff"></div>
-                <div><input type="submit" value="注册" style="background-color: #559eff;color: white"></div>
-            </form>
-        </el-dialog>
-        {#------------------------------登录界面------------------------------#}
+            {#------------------------------登录界面------------------------------#}
+            <el-dialog title="欢迎登录" :visible.sync="loginFormVisible" :append-to-body="true" width="35%">
+                <form style="text-align:center;" action="/login" method="get">
+                    {% csrf_token %}
+                    <div><input type="text" name="username" placeholder="请输入用户名" style="color: #559eff"></div>
+                    <div><input type="password" name="pwd" placeholder="请输入您的密码" style="color: #559eff"></div>
+                    <div><input type="submit" value="登录" style="background-color: #559eff;color: white"></div>
+                    {{ erorrMessage }}
+                </form>
+            </el-dialog>
+            {#------------------------------登录界面------------------------------#}
+
+            {#------------------------------注册界面------------------------------#}
+            <el-dialog title="欢迎注册" :visible.sync="registerFormVisible" :append-to-body="true" width="35%">
+                <form style="text-align:center;" action="/register">
+                    {% csrf_token %}
+                    <div><input type="text" name="username" placeholder="请输入用户名" style="color: #559eff"></div>
+                    <div><input type="password" name="pwd" placeholder="请输入您的密码" style="color: #559eff"></div>
+                    <div><input type="password" name="showName" placeholder="请输入您的昵称" style="color: #559eff"></div>
+                    <div><input type="submit" value="注册" style="background-color: #559eff;color: white"></div>
+                </form>
+            </el-dialog>
+            {#------------------------------注册界面------------------------------#}
+
+
+        {% elif loginMessage == "Succeed" %}
+            <el-button class="loginPart" type="primary" icon="el-icon-user"
+                       style="margin-bottom: 0.5%;"
+                       data-bs-toggle="popover"
+                       title="{{ username }}，您好"
+                       data-bs-content="余额：￥{{ wallet }}"
+                       circle></el-button>
+            <el-button class="loginPart" type="primary" icon="el-icon-plus" @click="rechargeFormVisible = true"
+                       circle></el-button>
+            {#------------------------------充值界面------------------------------#}
+            <el-dialog title="欢迎充钱" :visible.sync="rechargeFormVisible" :append-to-body="true" width="35%">
+                <form style="text-align:center;" action="/recharge" method="get">
+                    {% csrf_token %}
+                    <input type="text" name="rechargeUser" value="{{ username }}" style="display: none;">
+                    <div><input type="text" name="recharge" placeholder="请输入充值金额" style="color: #559eff"></div>
+                    <img src="{% static 'png/myWallet.jpg' %}" style="height: 64%;width: 48%">
+                    <div><input type="submit" value="充值" style="background-color: #559eff;color: white"></div>
+                    {{ erorrMessage }}
+                </form>
+            </el-dialog>
+            {#------------------------------充值界面------------------------------#}
+        {% endif %}
+
     </div>
 </el-menu>
 <div class="line"></div>
+{% for item in data_list %}
+    <div>
 
-<div class="div2" data-scroll-reveal="enter from the top over 5s"></div>
-<div class="div1"></div>
-<div class="div2" data-scroll-reveal="enter from the top over 5s"></div>
+        <div class="product_showName"
+             style="position: absolute;margin-left: 5%;font-size: 100px;color: #66afe9;z-index: 2">{{ item.showName }}</div>
+        <div class="product_showDescription"
+             style="position: absolute;margin-left: 5%;margin-top: 46%;font-size: 50px;color: #66afe9;z-index: 2">{{ item.description }}</div>
+        <div class="product_showDescription"
+             style="position: absolute;margin-left: 80%;margin-top: 46%;font-size: 50px;color: #66afe9;z-index: 2;display: -webkit-box;">
+            <button type="button" class="btn btn-warning btn-lg">购买：￥{{ item.price }}</button>
+
+            <form action="/FileRestore" method="get" style="width: 150px;margin-left: 3%">
+                <input type="text" name="productName" value="{{ item.showName }}_index" style="display: none">
+                <input type="submit" class="btn btn-outline-light btn-lg" value="预览" style="color:#66afe9 ">
+            </form>
+        </div>
+        <div class="div2" style="text-align:center;line-height:980px;">
+            <img class="img" src="{% static 'png/' %}{{ item.showName }}_png.png">
+        </div>
+    </div>
+
+{% endfor %}
+
 
 
 <script>
@@ -78,6 +111,7 @@
             return {
                 loginFormVisible: false,
                 registerFormVisible: false,
+                rechargeFormVisible: false,
                 formLabelWidth: '120px'
             }
         }
@@ -86,12 +120,13 @@
 </script>
 <script>
     (function () {
-        ScrollReveal().reveal('.div2', {
+        ScrollReveal().reveal('.img', {
+            distance: '200px',
+            origin: 'bottom',
+            duration: 1000,
             delay: 250,
             reset: true,
         });
-    })();
-    (function () {
         ScrollReveal().reveal(
             '.titleText',
             {
@@ -100,8 +135,6 @@
                 reset: true,
             }
         );
-    })();
-    (function () {
         ScrollReveal().reveal(
             '.loginPart',
             {
@@ -110,7 +143,34 @@
                 reset: true,
             }
         );
+        ScrollReveal().reveal(
+            '.product_showName',
+            {
+                delay: 250,
+                duration: 2000,
+                distance: '200px',
+                origin: 'top',
+                reset: true,
+            }
+        );
+        ScrollReveal().reveal(
+            '.product_showDescription',
+            {
+                delay: 250,
+                duration: 2000,
+                distance: '200px',
+                origin: 'top',
+                reset: true,
+            }
+        );
     })();
+
+</script>
+<script type="text/javascript">
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
+    });
 </script>
 {#elementUI的引入#}
 

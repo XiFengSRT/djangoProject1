@@ -27,5 +27,8 @@ urlpatterns = [
     # path('use/request', views.request),
     path('xadmin/', xadmin.site.urls),
     path('showPage/', product.showPage),
-    path('FileRestore/',FileRestore.views.toRequestHtml)
+    path('FileRestore/', FileRestore.views.toRequestHtml),
+    path('register/', product.register),
+    path('login/', product.login),
+    path('recharge/',product.recharge)
 ]
