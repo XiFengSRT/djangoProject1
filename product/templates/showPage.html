@@ -1,4 +1,5 @@
 {% load static %}
+{% load set_val %}
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -13,6 +14,8 @@
     <script src="{% static 'plugins/vue/vue.js' %}"></script>
     <script src="{% static 'plugins/elementUI/elementUI.js' %}"></script>
     <script src="{% static 'plugins/scrollreveal/scrollreveal.js' %}"></script>
+
+
 </head>
 <body>
 <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect" id="app">
@@ -81,25 +84,34 @@
 <div class="line"></div>
 {% for item in data_list %}
     <div>
-
         <div class="product_showName"
              style="position: absolute;margin-left: 5%;font-size: 100px;color: #66afe9;z-index: 2">{{ item.showName }}</div>
+        {#        这里是产品的名字，位于左上角#}
         <div class="product_showDescription"
              style="position: absolute;margin-left: 5%;margin-top: 46%;font-size: 50px;color: #66afe9;z-index: 2">{{ item.description }}</div>
+        {#        这里是产品的描述，位于左下方#}
         <div class="product_showDescription"
              style="position: absolute;margin-left: 80%;margin-top: 46%;font-size: 50px;color: #66afe9;z-index: 2;display: -webkit-box;">
-            <button type="button" class="btn btn-warning btn-lg">购买：￥{{ item.price }}</button>
-
+            {% with isBreak=1 %}
+                {% for property in property_list %}
+                    {% if property.productName == item.showName and isBreak == 1 %}
+                        {% set isBreak = 0 %}
+                        <button type="button" class="btn btn-warning btn-lg">下载</button>
+                    {% else %}
+                        <button type="button" class="btn btn-warning btn-lg">购买：￥{{ item.price }}</button>
+                    {% endif %}
+                {% endfor %}
+            {% endwith %}
             <form action="/FileRestore" method="get" style="width: 150px;margin-left: 3%">
                 <input type="text" name="productName" value="{{ item.showName }}_index" style="display: none">
                 <input type="submit" class="btn btn-outline-light btn-lg" value="预览" style="color:#66afe9 ">
             </form>
         </div>
+        {#        以上是购买与预览按钮，class是为了适应动画#}
         <div class="div2" style="text-align:center;line-height:980px;">
             <img class="img" src="{% static 'png/' %}{{ item.showName }}_png.png">
         </div>
     </div>
-
 {% endfor %}
 
 
