@@ -30,5 +30,6 @@ urlpatterns = [
     path('FileRestore/', FileRestore.views.toRequestHtml),
     path('register/', product.register),
     path('login/', product.login),
-    path('recharge/',product.recharge)
+    path('recharge/', product.recharge),
+    path('purchase/', product.purchase)
 ]

@@ -1,11 +1,9 @@
 {% load static %}
-{% load set_val %}
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <!-- 引入样式 -->
     <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'plugins/elementUI/elementUI.css' %}">
     <link rel="stylesheet" href="{% static 'css/showPage.css' %}">
@@ -14,8 +12,6 @@
     <script src="{% static 'plugins/vue/vue.js' %}"></script>
     <script src="{% static 'plugins/elementUI/elementUI.js' %}"></script>
     <script src="{% static 'plugins/scrollreveal/scrollreveal.js' %}"></script>
-
-
 </head>
 <body>
 <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect" id="app">
@@ -38,7 +34,6 @@
                     <div><input type="text" name="username" placeholder="请输入用户名" style="color: #559eff"></div>
                     <div><input type="password" name="pwd" placeholder="请输入您的密码" style="color: #559eff"></div>
                     <div><input type="submit" value="登录" style="background-color: #559eff;color: white"></div>
-                    {{ erorrMessage }}
                 </form>
             </el-dialog>
             {#------------------------------登录界面------------------------------#}
@@ -60,8 +55,8 @@
             <el-button class="loginPart" type="primary" icon="el-icon-user"
                        style="margin-bottom: 0.5%;"
                        data-bs-toggle="popover"
-                       title="{{ username }}，您好"
-                       data-bs-content="余额：￥{{ wallet }}"
+                       title="{{ tempUser.userName }}，您好"
+                       data-bs-content="余额：￥{{ tempUser.wallet }}"
                        circle></el-button>
             <el-button class="loginPart" type="primary" icon="el-icon-plus" @click="rechargeFormVisible = true"
                        circle></el-button>
@@ -69,11 +64,10 @@
             <el-dialog title="欢迎充钱" :visible.sync="rechargeFormVisible" :append-to-body="true" width="35%">
                 <form style="text-align:center;" action="/recharge" method="get">
                     {% csrf_token %}
-                    <input type="text" name="rechargeUser" value="{{ username }}" style="display: none;">
+                    <input type="text" name="rechargeUser" value="{{ tempUser.username }}" style="display: none;">
                     <div><input type="text" name="recharge" placeholder="请输入充值金额" style="color: #559eff"></div>
                     <img src="{% static 'png/myWallet.jpg' %}" style="height: 64%;width: 48%">
                     <div><input type="submit" value="充值" style="background-color: #559eff;color: white"></div>
-                    {{ erorrMessage }}
                 </form>
             </el-dialog>
             {#------------------------------充值界面------------------------------#}
@@ -81,47 +75,29 @@
 
     </div>
 </el-menu>
-<div class="line"></div>
-{% for item in data_list %}
-    <div>
-        <div class="product_showName"
-             style="position: absolute;margin-left: 5%;font-size: 100px;color: #66afe9;z-index: 2">{{ item.showName }}</div>
-        {#        这里是产品的名字，位于左上角#}
-        <div class="product_showDescription"
-             style="position: absolute;margin-left: 5%;margin-top: 46%;font-size: 50px;color: #66afe9;z-index: 2">{{ item.description }}</div>
-        {#        这里是产品的描述，位于左下方#}
-        <div class="product_showDescription"
-             style="position: absolute;margin-left: 80%;margin-top: 46%;font-size: 50px;color: #66afe9;z-index: 2;display: -webkit-box;">
-            {% with isBreak=1 %}
-                {% for property in property_list %}
-                    {% if property.productName == item.showName and isBreak == 1 %}
-                        {% set isBreak = 0 %}
-                        <button type="button" class="btn btn-warning btn-lg">下载</button>
-                    {% else %}
-                        {#----------------------------这里购买页面跳转----------------------------#}
-                        <form action="/purchase">
-                        {% csrf_token %}
-                            <input name="username" value="{{ username }}" style="display: none">
-                            <input name="productName" value="{{ item.showName }}" style="display: none">
-                            <input type="submit" class="btn btn-warning btn-lg" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" value="购买：￥{{ item.price }}" style="width: 150px">
-                                </input>
-                        </form>
-                        {#----------------------------这里购买页面跳转----------------------------#}
-                    {% endif %}
-                {% endfor %}
-            {% endwith %}
-            <form action="/FileRestore" method="get" style="width: 150px;margin-left: 3%">
-                <input type="text" name="productName" value="{{ item.showName }}_index" style="display: none">
-                <input type="submit" class="btn btn-outline-light btn-lg" value="预览" style="color:#66afe9 ">
-            </form>
-        </div>
-        {#        以上是购买与预览按钮，class是为了适应动画#}
-        <div class="div2" style="text-align:center;line-height:980px;">
-            <img class="img" src="{% static 'png/' %}{{ item.showName }}_png.png">
-        </div>
-    </div>
-{% endfor %}
+
+
+<!-- On tables -->
+<div style="width: 70%; margin-left: 32%;text-align: center;margin-top: 5%">
+    <table class="table" style="width: 50%;">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">productName</th>
+        <th scope="col">price</th>
+        <th scope="col">date</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <th scope="row">1</th>
+        <td>{{ tempProduct.showName }}</td>
+        <td>{{ tempProduct.price }}</td>
+        <td>{{ time }}</td>
+    </tr>
+    </tbody>
+</table>
+</div>
 
 <script>
     new Vue({
@@ -191,6 +167,5 @@
         return new bootstrap.Popover(popoverTriggerEl);
     });
 </script>
-{#elementUI的引入#}
 </body>
 </html>
