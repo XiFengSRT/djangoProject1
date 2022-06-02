@@ -75,38 +75,28 @@
 
     </div>
 </el-menu>
+{% if downloadFiles.css %}
+    <form action="/download">
+        <input name="file" value="{{ downloadFiles.css }}" style="display: none">
+        <input type="submit" class="btn btn-warning btn-lg" value="下载css" style="width: 160px">
+    </form>
+{% endif %}
+{% if downloadFiles.html %}
+    <form action="/download">
+        <input name="file" value="{{ downloadFiles.html }}" style="display: none">
+        <input type="submit" class="btn btn-warning btn-lg" value="下载html" style="width: 160px">
+    </form>
+{% endif %}
+{% if downloadFiles.js   %}
+    <form action="/download">
+        <input name="file" value="{{ downloadFiles.js }}" style="display: none">
+        <input type="submit" class="btn btn-warning btn-lg" value="下载js" style="width: 160px">
+    </form>
+{% endif %}
 
 
-<!-- On tables -->
-<h1 style="text-align: center;margin-top: 5%">交 易 单 据</h1>
-<div style="width: 70%; margin-left: 33%;text-align: center;margin-top: 1%">
-    <table class="table" style="width: 50%;">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">商品名称</th>
-            <th scope="col">价格</th>
-            <th scope="col">交易时间</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>{{ tempProduct.showName }}</td>
-            <td>{{ tempProduct.price }}</td>
-            <td>{{ time }}</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
 
-<form action="/deal">
-    <input name="productName" value="{{ tempProduct.showName }}" style="display: none">
-    <input name="userName" value="{{ tempUser.userName }}" style="display: none">
-    <input name="price" value="{{ tempProduct.price }}" style="display: none">
-    {{ dealMassage }}
-    <input type="submit" value="确定购买">
-</form>
+
 
 <script>
     new Vue({

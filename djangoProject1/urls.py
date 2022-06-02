@@ -31,5 +31,8 @@ urlpatterns = [
     path('register/', product.register),
     path('login/', product.login),
     path('recharge/', product.recharge),
-    path('purchase/', product.purchase)
+    path('purchase/', product.purchase),
+    path('deal/',product.deal),
+    path('download/',product.download),
+    path('downPage/',product.downPage)
 ]

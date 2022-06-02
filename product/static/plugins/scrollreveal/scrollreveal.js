@@ -629,11 +629,11 @@
 		}
 
 		if (config.rotate.x) { transformations.push(rotateX(config.rotate.x)); }
-		if (config.rotate.y) { transformations.push(rotateY(config.rotate.y)); }
+			if (config.rotate.y) { transformations.push(rotateY(config.rotate.y)); }
 		if (config.rotate.z) { transformations.push(rotateZ(config.rotate.z)); }
 		if (config.scale !== 1) {
 			if (config.scale === 0) {
-				/**
+			/**
 				 * The CSS Transforms matrix interpolation specification
 				 * basically disallows transitions of non-invertible
 				 * matrixes, which means browsers won't transition
@@ -1172,13 +1172,13 @@
 				}
 				if (!containerNode.contains(elementNode)) {
 					return elementBuffer // skip elements found outside the container
+				var containerId;
 				}
 
-				var containerId;
 				{
 					containerId = getContainerId(
-						containerNode,
 						containerBuffer,
+						containerNode,
 						this$1.store.containers
 					);
 					if (containerId === null) {
@@ -1190,17 +1190,17 @@
 				element.config = config;
 				element.containerId = containerId;
 				element.styles = style(element);
-
-				if (sequence$$1) {
+		if (sequence$$1) {
 					element.sequence = {
 						id: sequence$$1.id,
 						index: sequence$$1.members.length
 					};
 					sequence$$1.members.push(element.id);
+
 				}
 
-				elementBuffer.push(element);
-				return elementBuffer
+			elementBuffer.push(element);
+					return elementBuffer
 			}, []);
 
 			/**
