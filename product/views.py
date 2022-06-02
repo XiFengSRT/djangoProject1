@@ -1,11 +1,9 @@
 from django.shortcuts import render
 
-import User.models
 from product.models import product, property
 from User.models import User as user
 from recharge.models import rechargeRequest
 from django.http import HttpResponse
-from django.http import FileResponse
 import os
 import time
 
@@ -20,7 +18,7 @@ def showPage(request):
         final.append(
             [data.showName, data.description, data.price, data.html_address, data.css_address, data.js_address,
              data.png_address])
-    return render(request, "showPage.html", {"final": final, "loginMessage": loginMessage})
+    return render(request, "showPage.html", {"final": final, "data_list": data_list, "loginMessage": loginMessage})
 
 
 def register(request):

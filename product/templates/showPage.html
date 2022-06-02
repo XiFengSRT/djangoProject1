@@ -18,7 +18,7 @@
 
 </head>
 <body>
-<el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect" id="app">
+<el-menu class="el-menu-demo" mode="horizontal" id="app">
     <div class="titleText"
          style="display: inline-block;font-family:'PingFang SC';font-weight: bolder;font-size:x-large;margin-left: 2%;color: #559eff;padding-top: 0.5%">
         前 端 技 术
@@ -82,43 +82,49 @@
     </div>
 </el-menu>
 <div class="line"></div>
-{% for item in data_list %}
+{% for item in final %}
     <div>
         <div class="product_showName"
-             style="position: absolute;margin-left: 5%;font-size: 100px;color: #66afe9;z-index: 2">{{ item.showName }}</div>
+             style="position: absolute;margin-left: 5%;font-size: 100px;color: #66afe9;z-index: 2">{{ item.0 }}</div>
         {#        这里是产品的名字，位于左上角#}
         <div class="product_showDescription"
-             style="position: absolute;margin-left: 5%;margin-top: 46%;font-size: 50px;color: #66afe9;z-index: 2">{{ item.description }}</div>
+             style="position: absolute;margin-left: 5%;margin-top: 46%;font-size: 50px;color: #66afe9;z-index: 2">{{ item.1 }}</div>
         {#        这里是产品的描述，位于左下方#}
         <div class="product_showDescription"
              style="position: absolute;margin-left: 80%;margin-top: 46%;font-size: 50px;color: #66afe9;z-index: 2;display: -webkit-box;">
-            {% with isBreak=1 %}
-                {% for property in property_list %}
-                    {% if property.productName == item.showName and isBreak == 1 %}
-                        {% set isBreak = 0 %}
-                        <button type="button" class="btn btn-warning btn-lg">下载</button>
+
+
+            {% if item.7 == False %} <!-- 已经购买了 -->
+                <form action="/downPage">
+                    <input type="text" name="productName" value="{{ item.0 }}" style="display:none;">
+                    <input type="text" name="htmlFile" value="{{ item.3 }}" style="display:none;">
+                    <input type="text" name="cssFile" value="{{ item.4 }}" style="display:none;">
+                    <input type="text" name="jsFile" value="{{ item.5 }}" style="display:none;">
+                    <input type="submit" class="btn btn-warning btn-lg" value="下载" style="width: 160px">
+                </form>
+
+            {% else %}
+                <form action="/purchase">
+                    {% csrf_token %}
+                    <input name="username" value="{{ username }}" style="display: none">
+                    <input name="productName" value="{{ item.0 }}" style="display: none">
+                    {% if loginMessage == "Failure" %}
+                        <input type="submit" class="btn btn-warning btn-lg" data-bs-toggle="modal"
+                               data-bs-target="#exampleModal" disabled value="购买：￥{{ item.2 }}" style="width: 160px">
                     {% else %}
-                        {#----------------------------这里购买页面跳转----------------------------#}
-                        <form action="/purchase">
-                        {% csrf_token %}
-                            <input name="username" value="{{ username }}" style="display: none">
-                            <input name="productName" value="{{ item.showName }}" style="display: none">
-                            <input type="submit" class="btn btn-warning btn-lg" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal" value="购买：￥{{ item.price }}" style="width: 150px">
-                                </input>
-                        </form>
-                        {#----------------------------这里购买页面跳转----------------------------#}
+                        <input type="submit" class="btn btn-warning btn-lg" data-bs-toggle="modal"
+                               data-bs-target="#exampleModal" value="购买：￥{{ item.2 }}" style="width: 160px">
                     {% endif %}
-                {% endfor %}
-            {% endwith %}
-            <form action="/FileRestore" method="get" style="width: 150px;margin-left: 3%">
-                <input type="text" name="productName" value="{{ item.showName }}_index" style="display: none">
+                </form>
+            {% endif %}
+            <form action="/FileRestore" method="get" style="width: 160px;margin-left: 3%">
+                <input type="text" name="productName" value="{{ item.0 }}_index" style="display: none">
                 <input type="submit" class="btn btn-outline-light btn-lg" value="预览" style="color:#66afe9 ">
             </form>
         </div>
         {#        以上是购买与预览按钮，class是为了适应动画#}
         <div class="div2" style="text-align:center;line-height:980px;">
-            <img class="img" src="{% static 'png/' %}{{ item.showName }}_png.png">
+            <img class="img" src="{% static 'png/' %}{{ item.0 }}_png.png">
         </div>
     </div>
 {% endfor %}
@@ -139,13 +145,14 @@
 </script>
 <script>
     (function () {
-        ScrollReveal().reveal('.img', {
-            distance: '200px',
-            origin: 'bottom',
-            duration: 1000,
-            delay: 250,
-            reset: true,
-        });
+        ScrollReveal().reveal(
+            '.img', {
+                distance: '200px',
+                origin: 'bottom',
+                duration: 1000,
+                delay: 250,
+                reset: true,
+            });
         ScrollReveal().reveal(
             '.titleText',
             {
