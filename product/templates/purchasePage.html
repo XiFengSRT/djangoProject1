@@ -12,6 +12,7 @@
     <script src="{% static 'plugins/vue/vue.js' %}"></script>
     <script src="{% static 'plugins/elementUI/elementUI.js' %}"></script>
     <script src="{% static 'plugins/scrollreveal/scrollreveal.js' %}"></script>
+
 </head>
 <body>
 <el-menu class="el-menu-demo" mode="horizontal" @select="handleSelect" id="app">
@@ -122,54 +123,7 @@
     })
 
 </script>
-<script>
-    (function () {
-        ScrollReveal().reveal('.img', {
-            distance: '200px',
-            origin: 'bottom',
-            duration: 1000,
-            delay: 250,
-            reset: true,
-        });
-        ScrollReveal().reveal(
-            '.titleText',
-            {
-                distance: '200px',
-                origin: 'left',
-                reset: true,
-            }
-        );
-        ScrollReveal().reveal(
-            '.loginPart',
-            {
-                distance: '200px',
-                origin: 'left',
-                reset: true,
-            }
-        );
-        ScrollReveal().reveal(
-            '.product_showName',
-            {
-                delay: 250,
-                duration: 2000,
-                distance: '200px',
-                origin: 'top',
-                reset: true,
-            }
-        );
-        ScrollReveal().reveal(
-            '.product_showDescription',
-            {
-                delay: 250,
-                duration: 2000,
-                distance: '200px',
-                origin: 'top',
-                reset: true,
-            }
-        );
-    })();
 
-</script>
 <script type="text/javascript">
     var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
     var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {

@@ -1,5 +1,4 @@
 {% load static %}
-{% load set_val %}
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
@@ -13,13 +12,13 @@
     <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'plugins/vue/vue.js' %}"></script>
     <script src="{% static 'plugins/elementUI/elementUI.js' %}"></script>
-    <script src="{% static 'plugins/scrollreveal/scrollreveal.js' %}"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
 
 
 </head>
 <body>
 <el-menu class="el-menu-demo" mode="horizontal" id="app">
-    <div class="titleText"
+    <div class="titleText" data-scroll-reveal="enter left and move 50px over 1.33s"
          style="display: inline-block;font-family:'PingFang SC';font-weight: bolder;font-size:x-large;margin-left: 2%;color: #559eff;padding-top: 0.5%">
         前 端 技 术
     </div>
@@ -86,10 +85,10 @@
     <div>
         <div class="product_showName"
              style="position: absolute;margin-left: 5%;font-size: 100px;color: #66afe9;z-index: 2">{{ item.0 }}</div>
-        {#        这里是产品的名字，位于左上角#}
+{#                这里是产品的名字，位于左上角#}
         <div class="product_showDescription"
              style="position: absolute;margin-left: 5%;margin-top: 46%;font-size: 50px;color: #66afe9;z-index: 2">{{ item.1 }}</div>
-        {#        这里是产品的描述，位于左下方#}
+{#                这里是产品的描述，位于左下方#}
         <div class="product_showDescription"
              style="position: absolute;margin-left: 80%;margin-top: 46%;font-size: 50px;color: #66afe9;z-index: 2;display: -webkit-box;">
 
@@ -122,12 +121,13 @@
                 <input type="submit" class="btn btn-outline-light btn-lg" value="预览" style="color:#66afe9 ">
             </form>
         </div>
-        {#        以上是购买与预览按钮，class是为了适应动画#}
+{#                以上是购买与预览按钮，class是为了适应动画#}
         <div class="div2" style="text-align:center;line-height:980px;">
             <img class="img" src="{% static 'png/' %}{{ item.0 }}_png.png">
         </div>
     </div>
 {% endfor %}
+
 
 <script>
     new Vue({
@@ -143,7 +143,14 @@
     })
 
 </script>
-<script>
+
+<script type="text/javascript">
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+        return new bootstrap.Popover(popoverTriggerEl);
+    });
+</script>
+<script type="text/javascript">
     (function () {
         ScrollReveal().reveal(
             '.img', {
@@ -191,12 +198,6 @@
         );
     })();
 
-</script>
-<script type="text/javascript">
-    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
-        return new bootstrap.Popover(popoverTriggerEl);
-    });
 </script>
 {#elementUI的引入#}
 </body>
